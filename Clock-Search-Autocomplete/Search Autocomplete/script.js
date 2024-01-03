@@ -88,5 +88,31 @@ const availableKeywords = data.map((song) => [song.artist, song.track]).flat();
 
 let results = [];
 
-const result__box = document.getElementById("result__box");
+const result_box = document.getElementById("result__box");
 const input = document.getElementById("input");
+
+input.addEventListener("input", () => {
+  const givenValue = input.value.trim().toLowerCase();
+
+  if (!givenValue) {
+    result_box.classList.add("hidden");
+    result_box.innerHTML = ""; 
+    return;
+  }
+
+  results = availableKeywords.filter((keyword) => keyword.toLowerCase().includes(givenValue));
+
+  result_box.innerHTML = "";
+
+  results.forEach((result) => {
+    const liElement = document.createElement("li");
+    liElement.className = "text-slate-700 rounded-md p-4 cursor-pointer hover:bg-slate-200 transition-all duration-200";
+    liElement.textContent = result; 
+    liElement.addEventListener("click", (e) => {
+      input.value = e.target.textContent;
+      result_box.classList.add("hidden");
+    });
+    result_box.classList.remove("hidden");
+    result_box.append(liElement); 
+  });
+});
